@@ -1,0 +1,32 @@
+---
+- hosts: all
+  tasks:
+    - name: Gather facts
+      ansible.builtin.setup:
+
+    - name: Install Ngnix package for RedHat-based systems
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Ngnix package for Debian-based systems
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start and enable Nginx service fo RedHat-based systems
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Start and enable Nginx service fo Debian-based systems
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+      
